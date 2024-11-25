@@ -165,7 +165,73 @@ syscall(void)
     // and store its return value in p->trapframe->a0
     p->trapframe->a0 = syscalls[num]();
     if (p->trace_mask & (1 << num)){
-      printf("%d: syscall %s -> %ld\n", p->pid, syscall_names[num], p->trapframe->a0);
+      printf("%d: syscall %s -> %ld", p->pid, syscall_names[num], p->trapframe->a0);
+
+      if (num == SYS_chdir || num == SYS_unlink || num == SYS_mkdir) {
+          printf(" : path=%lx", p->trapframe->a0);
+      }
+
+      if (num == SYS_dup || num == SYS_close) {
+          printf(" : fd=%ld", p->trapframe->a0);
+      }
+
+      if (num == SYS_exit) {
+          printf(" : exit_code=%ld", p->trapframe->a0);
+      }
+
+      if (num == SYS_wait) {
+          printf(" : pid_ptr=%lx", p->trapframe->a0);
+      }
+
+      if (num == SYS_sbrk) {
+          printf(" : increment=%ld", p->trapframe->a0);
+      }
+
+      if (num == SYS_sleep) {
+          printf(" : seconds=%ld", p->trapframe->a0);
+      }
+
+      if (num == SYS_trace) {
+          printf(" : mask=%ld", p->trapframe->a0);
+      }
+
+      if (num == SYS_fstat) {
+          printf(" : fd=%ld, stat_ptr=%lx", p->trapframe->a0, p->trapframe->a1);
+      }
+
+      if (num == SYS_link) {
+          printf(" : old_path=%lx, new_path=%lx", p->trapframe->a0, p->trapframe->a1);
+      }
+
+      if (num == SYS_kill) {
+          printf(" : pid=%ld, signal=%ld", p->trapframe->a0, p->trapframe->a1);
+      }
+
+      if (num == SYS_pipe) {
+          printf(" : pipefd_array=%lx", p->trapframe->a0);
+      }
+
+      if (num == SYS_read || num == SYS_write) {
+          printf(" : fd=%ld, buf=%lx, count=%ld", p->trapframe->a0, p->trapframe->a1, p->trapframe->a2);
+      }
+
+      if (num == SYS_open) {
+          printf(" : path=%lx, flags=%ld, mode=%ld", p->trapframe->a0, p->trapframe->a1, p->trapframe->a2);
+      }
+
+      if (num == SYS_mknod) {
+          printf(" : path=%lx, type=%ld, major_minor=%ld", p->trapframe->a0, p->trapframe->a1, p->trapframe->a2);
+      }
+
+      if (num == SYS_exec) {
+          printf(" : path=%lx, argv=%lx", p->trapframe->a0, p->trapframe->a1);
+      }
+
+      if (num == SYS_fork || num == SYS_getpid || num == SYS_uptime) {
+          // Not have argument
+      }
+
+      printf("\n");
     }
   } else {
     printf("%d %s: unknown sys call %d\n",
