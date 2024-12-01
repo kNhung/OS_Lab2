@@ -1,0 +1,21 @@
+Looking at the backtrace output, which function called syscall?
+    kernel/trap.c:67 usertrap()
+
+What is the value of p->trapframe->a7 and what does that value represent?
+    value: 7
+    represent: SYS_exec
+
+What was the previous mode that the CPU was in?
+    user mode
+
+Write down the assembly instruction the kernel is panicing at. Which register corresponds to the variable num?
+    assembly instruction: lw a3, 0(zero)
+    register: a3
+
+Why does the kernel crash?
+    Load Page Fault, load vì nó tải dữ liệu bộ nhớ không được sử dụng tại địa chỉ 0
+
+What is the name of the binary that was running when the kernel paniced? What is its process id (pid)?
+    name: initcode
+    pid: 1
+
