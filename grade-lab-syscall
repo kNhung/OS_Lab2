@@ -65,12 +65,17 @@ def test_trace_children():
     r.match('^\\d+: syscall fork -> -1')
     r.match('^OK')
 
-@test(14, "attack")
-def test_attack():
+@test(14, "sysinfotest")
+
+def test_sysinfotest():
+
     r.run_qemu(shell_script([
-        'attacktest'
+
+        'sysinfotest'
+
     ]))
-    r.match('^OK: secret is')
+
+    r.match('^sysinfotest: OK', no=[".* FAIL .*"])
 
 @test(1, "time")
 def test_time():

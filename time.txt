@@ -1,1 +1,1 @@
-Nhóm em thêm file này để make grade chạy full
+10
